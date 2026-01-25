@@ -57,18 +57,231 @@ const Map = (props) => {
   return undefined;
 }, [mapRef, loaded, setMap]);
 
+
+// 1) Animated vessel track setup (source + layer)
 useEffect(() => {
   if (!loaded || !map) return;
 
-  const chapter =
-    typeof currentChapterId === 'string'
-      ? chapters.find(c => c.id === currentChapterId)
-      : currentChapterId;
+  const SOURCE_ID = "vessel-anim";
+  const LAYER_ID = "vessel-anim-line";
 
-  if (chapter?.callback && typeof window[chapter.callback] === 'function') {
-    window[chapter.callback](); // run your multi-step camera sequence
-  }
-}, [loaded, map, currentChapterId, chapters]);
+  const ensureAnimLayer = () => {
+    // source
+    if (!map.getSource(SOURCE_ID)) {
+  map.addSource(SOURCE_ID, {
+    type: "geojson",
+    data: { type: "FeatureCollection", features: [] }
+  });
+}
+
+    // layer
+    if (!map.getLayer(LAYER_ID)) {
+      map.addLayer({
+        id: LAYER_ID,
+        type: "line",
+        source: SOURCE_ID,
+        paint: {
+          "line-color": "#ff3b30",  
+          "line-width": 1,
+          "line-opacity": 0.9
+        }
+      });
+    }
+  };
+
+  ensureAnimLayer();
+
+  // Re-add after any style reload
+  map.on("styledata", ensureAnimLayer);
+  return () => map.off("styledata", ensureAnimLayer);
+}, [loaded, map]);
+
+
+
+
+
+// 2) Animated vessel track controller (plays ALL parts, antimeridian-safe, pause/resume)
+useEffect(() => {
+  if (!loaded || !map) return;
+
+  const SOURCE_ID = "vessel-anim";
+
+  let parts = [];            // array of coordinate arrays (each "part" is a LineString)
+  let animId = null;
+
+  // animation state
+  let partIdx = 0;           // which part we’re drawing
+  let pointIdx = 0;          // how many points into the current part
+  let isPaused = false;
+
+  // “session” state
+  let currentVesselFile = null;
+  let speed = 2;
+
+  const setFeatures = (features) => {
+    const src = map.getSource(SOURCE_ID);
+    if (!src) return;
+
+    src.setData({
+      type: "FeatureCollection",
+      features
+    });
+  };
+
+  const buildDrawnFeatures = () => {
+    const features = [];
+
+    // fully completed parts
+    for (let i = 0; i < partIdx; i++) {
+      features.push({
+        type: "Feature",
+        properties: { part: i + 1, status: "done" },
+        geometry: { type: "LineString", coordinates: parts[i] }
+      });
+    }
+
+    // current part (partial)
+    const current = parts[partIdx];
+    if (current) {
+      const slice = current.slice(0, Math.max(2, pointIdx));
+      if (slice.length >= 2) {
+        features.push({
+          type: "Feature",
+          properties: { part: partIdx + 1, status: "active" },
+          geometry: { type: "LineString", coordinates: slice }
+        });
+      }
+    }
+
+    return features;
+  };
+
+  const loadVessel = async (vesselFile) => {
+    const res = await fetch(vesselFile);
+    const gj = await res.json();
+
+    const feats = gj?.features || [];
+    const lineFeats = feats.filter((f) => f?.geometry?.type === "LineString");
+
+    parts = lineFeats
+      .map((f) => f.geometry.coordinates || [])
+      .filter((c) => Array.isArray(c) && c.length >= 2);
+
+    return parts;
+  };
+
+  const reset = () => {
+    if (animId) cancelAnimationFrame(animId);
+    animId = null;
+
+    partIdx = 0;
+    pointIdx = 0;
+    isPaused = false;
+
+    // keep currentVesselFile so you can decide whether to restart or not
+    setFeatures([]); // clear drawn line
+  };
+
+  const pause = () => {
+    isPaused = true;
+    if (animId) cancelAnimationFrame(animId);
+    animId = null;
+  };
+
+  const tick = () => {
+    if (isPaused) return;
+
+    const current = parts[partIdx];
+    if (!current) return;
+
+    // advance within current part
+    pointIdx = Math.min(pointIdx + speed, current.length);
+
+    // render
+    setFeatures(buildDrawnFeatures());
+
+    // if current part finished -> next
+    if (pointIdx >= current.length) {
+      partIdx += 1;
+      pointIdx = 0;
+
+      // all parts done
+      if (partIdx >= parts.length) {
+        animId = null;
+        return;
+      }
+    }
+
+    animId = requestAnimationFrame(tick);
+  };
+
+  const resume = () => {
+    if (!parts.length) return;
+    if (animId) cancelAnimationFrame(animId);
+    isPaused = false;
+    animId = requestAnimationFrame(tick);
+  };
+
+  // start = load (if needed) + (optionally) restart + play
+  const start = async ({
+    vesselFile,
+    speed: sp = 2,
+    flyToStart = true,
+    restart = false
+  } = {}) => {
+    if (!vesselFile) {
+      console.warn("trackAnimation.start: missing vesselFile");
+      return;
+    }
+
+    // same vessel + not restarting: just resume where we left off
+    if (currentVesselFile === vesselFile && parts.length && !restart) {
+      speed = sp;
+      resume();
+      return;
+    }
+
+    // new vessel OR forced restart
+    currentVesselFile = vesselFile;
+    speed = sp;
+    isPaused = false;
+
+    await loadVessel(vesselFile);
+    if (!parts.length) return;
+
+    // reset progress only when starting new vessel or forced restart
+    if (animId) cancelAnimationFrame(animId);
+    animId = null;
+    partIdx = 0;
+    pointIdx = 0;
+
+    setFeatures([]); // clear before re-drawing
+
+    if (flyToStart) {
+      const [lon, lat] = parts[0][0];
+      map.flyTo({
+        center: [lon, lat],
+        zoom: map.getZoom(),
+        bearing: map.getBearing(),
+        pitch: map.getPitch()
+      });
+    }
+
+    animId = requestAnimationFrame(tick);
+  };
+
+  // expose global API for scrolly triggers
+  window.trackAnimation = { start, pause, resume, reset };
+
+  return () => {
+    // cleanup if component unmounts
+    if (animId) cancelAnimationFrame(animId);
+    if (window.trackAnimation) delete window.trackAnimation;
+  };
+}, [loaded, map]);
+
+
+
 
 
   useScrollFunctionality({

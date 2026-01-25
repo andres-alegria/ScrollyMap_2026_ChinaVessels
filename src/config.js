@@ -37,6 +37,28 @@ export default {
   footer: 'Produced by Latoya Abulu | Cartography by Andrés Alegría',
  
   chapters: [
+
+{
+  id: "vessel-x",
+  title: "Vessel track",
+  location: { center: [113.4, 23.08], zoom: 2, pitch: 0, bearing: 0 },
+  onChapterEnter: [
+    {
+      callback: "trackAnimation.start",
+      options: {
+      vesselFile: "/data/tracks/Xiang_Yang_Hong01_track.geojson", 
+      camera: "start",
+      speed: 12,
+     flyToStart: true
+      }
+    }
+  ],
+  onChapterExit: [
+    { callback: "trackAnimation.pause" },
+  ]
+},
+
+
     
     // chapter 01
     {

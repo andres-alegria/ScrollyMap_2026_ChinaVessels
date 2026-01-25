@@ -32,7 +32,8 @@ export const setOpacityOnAction = (
   externalLayersIds
 ) => {
   const updatedExternalLayersOpacity = { ...externalLayersOpacity };
-  chapter[action].forEach((layer) => {
+(chapter[action] || []).forEach((layer) => {
+  if (!layer || !layer.layer) return; // ignore callback steps
     if (externalLayersIds.includes(layer.layer)) {
       updatedExternalLayersOpacity[layer.layer] = layer.opacity;
     }

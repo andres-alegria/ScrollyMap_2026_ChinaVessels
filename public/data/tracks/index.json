@@ -1,0 +1,190 @@
+{
+  "type": "VesselTrackIndex",
+  "count": 8,
+  "tracks": [
+    {
+      "vessel": "Da Yang Hao",
+      "file": "/data/tracks/Da_Yang_Hao_track.geojson",
+      "n_points": 50136,
+      "n_parts": 21,
+      "n_segments": 12,
+      "start_time": "2020-01-01T00:03:30Z",
+      "end_time": "2025-12-31T23:06:37Z",
+      "first_coord": [
+        129.4516667,
+        20.2816667
+      ],
+      "last_coord": [
+        122.46,
+        19.655
+      ],
+      "bbox": [
+        -179.9999883,
+        -38.4607833,
+        179.9980883,
+        45.00467
+      ]
+    },
+    {
+      "vessel": "Da Yang Yi Hao",
+      "file": "/data/tracks/Da_Yang_Yi_Hao_track.geojson",
+      "n_points": 49346,
+      "n_parts": 5,
+      "n_segments": 19,
+      "start_time": "2020-01-01T00:07:57Z",
+      "end_time": "2025-04-28T07:40:33Z",
+      "first_coord": [
+        120.5237633,
+        36.09295
+      ],
+      "last_coord": [
+        120.52121,
+        36.0925767
+      ],
+      "bbox": [
+        -179.996805,
+        -38.564625,
+        179.9823683,
+        38.4489983
+      ]
+    },
+    {
+      "vessel": "Haiyang Dizhi Liuhao",
+      "file": "/data/tracks/Haiyang_Dizhi_Liuhao_track.geojson",
+      "n_points": 53152,
+      "n_parts": 35,
+      "n_segments": 46,
+      "start_time": "2020-01-01T00:02:13Z",
+      "end_time": "2025-12-31T23:39:23Z",
+      "first_coord": [
+        113.6044117,
+        22.9316567
+      ],
+      "last_coord": [
+        113.5842167,
+        22.8109783
+      ],
+      "bbox": [
+        -179.9947133,
+        4.5789433,
+        179.9962917,
+        27.3327617
+      ]
+    },
+    {
+      "vessel": "Ke Xu",
+      "file": "/data/tracks/Ke_Xu_track.geojson",
+      "n_points": 53225,
+      "n_parts": 3,
+      "n_segments": 30,
+      "start_time": "2020-01-01T00:59:40Z",
+      "end_time": "2025-12-31T23:01:39Z",
+      "first_coord": [
+        126.4970133,
+        20.1937333
+      ],
+      "last_coord": [
+        120.2413333,
+        35.9800583
+      ],
+      "bbox": [
+        -179.9443367,
+        -4.0249017,
+        179.96618,
+        57.84416
+      ]
+    },
+    {
+      "vessel": "Shen Hai Yi Hao",
+      "file": "/data/tracks/Shen_Hai_Yi_Hao_track.geojson",
+      "n_points": 56963,
+      "n_parts": 3,
+      "n_segments": 7,
+      "start_time": "2020-01-01T00:12:02Z",
+      "end_time": "2025-12-31T23:56:47Z",
+      "first_coord": [
+        122.0017533,
+        29.8922933
+      ],
+      "last_coord": [
+        105.3637817,
+        1.7777783
+      ],
+      "bbox": [
+        -179.9847167,
+        -35.1820617,
+        179.979655,
+        77.5578967
+      ]
+    },
+    {
+      "vessel": "Xiang Yang Hong01",
+      "file": "/data/tracks/Xiang_Yang_Hong01_track.geojson",
+      "n_points": 47596,
+      "n_parts": 27,
+      "n_segments": 74,
+      "start_time": "2020-01-01T00:13:29Z",
+      "end_time": "2025-12-27T10:59:18Z",
+      "first_coord": [
+        122.7303333,
+        23.7481667
+      ],
+      "last_coord": [
+        109.2941667,
+        21.1893333
+      ],
+      "bbox": [
+        -179.9998333,
+        -38.0008333,
+        179.9998333,
+        62.2995
+      ]
+    },
+    {
+      "vessel": "Xiang Yang Hong02",
+      "file": "/data/tracks/Xiang_Yang_Hong02_track.geojson",
+      "n_points": 64123,
+      "n_parts": 1,
+      "n_segments": 9,
+      "start_time": "2020-01-01T00:07:20Z",
+      "end_time": "2025-12-31T23:32:50Z",
+      "first_coord": [
+        86.1967733,
+        5.81336
+      ],
+      "last_coord": [
+        118.0974667,
+        24.5502817
+      ],
+      "bbox": [
+        55.2851467,
+        -25.0004267,
+        179.47628,
+        36.6733333
+      ]
+    },
+    {
+      "vessel": "Xiang Yang Hong03",
+      "file": "/data/tracks/Xiang_Yang_Hong03_track.geojson",
+      "n_points": 50629,
+      "n_parts": 3,
+      "n_segments": 39,
+      "start_time": "2020-01-01T00:16:53Z",
+      "end_time": "2025-12-31T23:24:11Z",
+      "first_coord": [
+        80.0364533,
+        2.00712
+      ],
+      "last_coord": [
+        120.52487,
+        36.09377
+      ],
+      "bbox": [
+        -179.9798917,
+        -0.373835,
+        179.90745,
+        41.569675
+      ]
+    }
+  ]
+}

@@ -35,6 +35,16 @@ export const useScrollFunctionality = ({
           setExternalLayersOpacity,
           externalLayersIds
         );
+        
+        // Run optional callbacks in onChapterEnter
+(chapter.onChapterEnter || [])
+  .filter(s => s && s.callback)
+  .forEach(s => {
+    const fn = s.callback.split(".").reduce((o, k) => (o ? o[k] : undefined), window);
+    if (typeof fn === "function") fn(s.options);
+  });
+
+
       }
       if (currentChapterId && currentAction === 'leave') {
         const chapter = chapters.find((c) => c.id === currentChapterId);
@@ -46,6 +56,16 @@ export const useScrollFunctionality = ({
           setExternalLayersOpacity,
           externalLayersIds
         );
+        
+  // Run optional callbacks in onChapterExit
+(chapter.onChapterExit || [])
+  .filter(s => s && s.callback)
+  .forEach(s => {
+    const fn = s.callback.split(".").reduce((o, k) => (o ? o[k] : undefined), window);
+    if (typeof fn === "function") fn(s.options);
+  });
+      
+        
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
