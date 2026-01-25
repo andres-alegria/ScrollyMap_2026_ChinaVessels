@@ -65,6 +65,10 @@ useEffect(() => {
   const SOURCE_ID = "vessel-anim";
   const LAYER_ID = "vessel-anim-line";
 
+  const DOT_SOURCE_ID = "vessel-dot";
+  const DOT_LAYER_ID = "vessel-dot-layer";
+
+
   const ensureAnimLayer = () => {
     // source
     if (!map.getSource(SOURCE_ID)) {
@@ -87,6 +91,35 @@ useEffect(() => {
         }
       });
     }
+    
+// dot source
+if (!map.getSource(DOT_SOURCE_ID)) {
+  map.addSource(DOT_SOURCE_ID, {
+    type: "geojson",
+    data: {
+      type: "Feature",
+      properties: {},
+      geometry: { type: "Point", coordinates: [] }
+    }
+  });
+}
+
+// dot layer
+if (!map.getLayer(DOT_LAYER_ID)) {
+  map.addLayer({
+    id: DOT_LAYER_ID,
+    type: "circle",
+    source: DOT_SOURCE_ID,
+    paint: {
+      "circle-radius": 4,
+      "circle-color": "#ff3b30",
+      "circle-stroke-width": 1,
+      "circle-stroke-color": "#ffffff"
+    }
+  });
+}
+    
+    
   };
 
   ensureAnimLayer();
@@ -105,6 +138,8 @@ useEffect(() => {
   if (!loaded || !map) return;
 
   const SOURCE_ID = "vessel-anim";
+  const DOT_SOURCE_ID = "vessel-dot";
+
 
   let parts = [];            // array of coordinate arrays (each "part" is a LineString)
   let animId = null;
@@ -118,15 +153,29 @@ useEffect(() => {
   let currentVesselFile = null;
   let speed = 2;
 
+  
   const setFeatures = (features) => {
-    const src = map.getSource(SOURCE_ID);
-    if (!src) return;
+  const src = map.getSource(SOURCE_ID);
+  if (!src) return;
 
-    src.setData({
-      type: "FeatureCollection",
-      features
-    });
-  };
+  src.setData({
+    type: "FeatureCollection",
+    features
+  });
+};
+
+const setDot = (coord) => {
+  const src = map.getSource(DOT_SOURCE_ID);
+  if (!src) return;
+
+  src.setData({
+    type: "Feature",
+    properties: {},
+    geometry: { type: "Point", coordinates: coord }
+  });
+};
+
+  
 
   const buildDrawnFeatures = () => {
     const features = [];
@@ -180,6 +229,8 @@ useEffect(() => {
 
     // keep currentVesselFile so you can decide whether to restart or not
     setFeatures([]); // clear drawn line
+    setDot([]);
+
   };
 
   const pause = () => {
@@ -199,6 +250,10 @@ useEffect(() => {
 
     // render
     setFeatures(buildDrawnFeatures());
+    
+    const headIndex = Math.max(0, Math.min(pointIdx - 1, current.length - 1));
+setDot(current[headIndex]);
+
 
     // if current part finished -> next
     if (pointIdx >= current.length) {
