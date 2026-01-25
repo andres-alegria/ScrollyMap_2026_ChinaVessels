@@ -22,7 +22,7 @@ export default {
       options: {
       vesselFile: "/data/tracks/Xiang_Yang_Hong01_track.geojson", 
       camera: "start",
-      speed: 15,
+      speed: 25,
      flyToStart: true
       }
     }
