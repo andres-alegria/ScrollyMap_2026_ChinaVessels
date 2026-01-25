@@ -15,7 +15,20 @@ export default {
   alignment: 'left',
   title: 'June 2025',
   description: "The Xiang Yang Hang 01, a vast white vessel loaded with oceanographic equipment, cruised through the Northwest Pacific until it reached a section of the seafloor rich in polymetallic nodules — potato-shaped rocks that contain commercially valuable metals such as manganese, nickel, cobalt, and copper. The ship crisscrossed and zigzagged over the site, conducting research in the area miners would eventually exploit through deep-sea mining — a controversial industry that could be on the cusp of starting, and that experts warn could cause irreparable harm to the marine ecosystems.",
-  location: { center: [113.4, 23.08], zoom: 1.25, pitch: 0, bearing: 0 },
+  location: { center: [100, 23.08], zoom: 2, pitch: 0, bearing: 0 },
+  
+  legend: [
+        {
+          title: 'Exploration Areas',
+          color: '#e66d6d',
+          border: '#f6bcb3',
+        },
+        {
+          title: 'Reserve Areas',
+          color: '#006a54',
+        },
+         ],
+  
   onChapterEnter: [
     {
       callback: "trackAnimation.start",
