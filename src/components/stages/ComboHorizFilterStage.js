@@ -115,7 +115,7 @@ ScrollTrigger.getAll()
   return (
     <div className="stage-combo" ref={rootRef}>
       <section className="panel plain">
-        <h3>Scroll down for the Gallery</h3>
+        <h1>Below are some placeholder images - testing the animation </h1>
       </section>
 
       <section id="portfolio">
@@ -155,7 +155,7 @@ ScrollTrigger.getAll()
       </section>
 
       <section className="panel plain">
-        <h3>Below comes a gallery filter.</h3>
+        <h3>Placeholder image gallery.</h3>
       </section>
 
       <section className="container">
@@ -200,7 +200,7 @@ ScrollTrigger.getAll()
       </section>
 
       <section className="panel plain">
-        <h3>Thats it!</h3>
+        <h3>Thats it for now!</h3>
       </section>
     </div>
   );

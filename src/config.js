@@ -57,28 +57,19 @@ export default {
   alignment: "fully" // doesn’t matter now, stage forces full width
 },
 
+ // chapter 02
+
  {
-      id: 'Top 10',
+      id: 'Placeholder',
       alignment: 'left',
       hidden: false,
-      title: '#10 Awá',
-      description: "Home to:<br><b>Isolated people of Mão de onça</b><br><br>• Country: Brazil<br>• Territory: 117,000 ha<br>• Forest loss: 15,000 ha<br>• Forest loss per ha of territory: 0.129 ha",
+      title: 'Placeholder',
+      description: "Placeholder text",
         
-      legend: [
-        {
-          title: 'Indigenous Territories',
-          color: '#bdeaaf',
-          border: '#006a54',
-        },
-        {
-          title: 'Forest cover loss (2010—2024)',
-          color: '#e66d6d',
-        },
-         ],
-       
+    
       location: {
         center: [-46.55,-3.367],
-        zoom: 9.25,
+        zoom: 7,
         pitch: 0,
         bearing: 0,
       },
