@@ -53,9 +53,20 @@ export default {
 {
   id: "combo-stage",
   type: "stage",
-  stage: "comboHorizFilter",
+  stage: "GalleryHorizontalScroll",
   alignment: "fully" // doesn’t matter now, stage forces full width
 },
+
+
+ // chapter 01a
+
+{
+  id: "combo-stage",
+  type: "stage",
+  stage: "GalleryFilter",
+  alignment: "fully" // doesn’t matter now, stage forces full width
+},
+
 
  // chapter 02
 
@@ -81,6 +92,18 @@ export default {
     },
 
 
+
+ // chapter 01
+
+{
+  id: "plain text",
+  type: "stage",
+  stage: "PlainText",
+  alignment: "fully" // doesn’t matter now, stage forces full width
+},
+
+
+ // chapter 01a
 
 
 
