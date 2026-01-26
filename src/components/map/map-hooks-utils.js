@@ -32,14 +32,23 @@ export const setOpacityOnAction = (
   externalLayersIds
 ) => {
   const updatedExternalLayersOpacity = { ...externalLayersOpacity };
-(chapter[action] || []).forEach((layer) => {
-  if (!layer || !layer.layer) return; // ignore callback steps
+
+  // ✅ always an array (stage chapters won’t have onChapterEnter/Exit etc.)
+  const actionList = Array.isArray(chapter?.[action]) ? chapter[action] : [];
+
+  // External layers (opacity tracked in state)
+  actionList.forEach((layer) => {
+    if (!layer || !layer.layer) return; // ignore callback/invalid steps
     if (externalLayersIds.includes(layer.layer)) {
       updatedExternalLayersOpacity[layer.layer] = layer.opacity;
     }
   });
+
   setExternalLayersOpacity(updatedExternalLayersOpacity);
-  chapter[action]
-    .filter((layer) => !externalLayersIds.includes(layer.layer))
+
+  // Mapbox internal layers
+  actionList
+    .filter((layer) => layer && layer.layer && !externalLayersIds.includes(layer.layer))
     .forEach((layer) => setLayerOpacity(layer, map));
 };
+

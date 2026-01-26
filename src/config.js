@@ -9,6 +9,8 @@ export default {
 
   chapters: [
 
+
+
  // chapter 00
 {
   id: "chapter 00",
@@ -44,6 +46,52 @@ export default {
     { callback: "trackAnimation.pause" },
   ]
 },
+
+
+ // chapter 01
+
+{
+  id: "combo-stage",
+  type: "stage",
+  stage: "comboHorizFilter",
+  alignment: "fully" // doesn’t matter now, stage forces full width
+},
+
+ {
+      id: 'Top 10',
+      alignment: 'left',
+      hidden: false,
+      title: '#10 Awá',
+      description: "Home to:<br><b>Isolated people of Mão de onça</b><br><br>• Country: Brazil<br>• Territory: 117,000 ha<br>• Forest loss: 15,000 ha<br>• Forest loss per ha of territory: 0.129 ha",
+        
+      legend: [
+        {
+          title: 'Indigenous Territories',
+          color: '#bdeaaf',
+          border: '#006a54',
+        },
+        {
+          title: 'Forest cover loss (2010—2024)',
+          color: '#e66d6d',
+        },
+         ],
+       
+      location: {
+        center: [-46.55,-3.367],
+        zoom: 9.25,
+        pitch: 0,
+        bearing: 0,
+      },
+      
+      mapAnimation: 'flyTo',
+      rotateAnimation: false,
+      onChapterEnter: [    ],
+      onChapterExit: [    ],
+    },
+
+
+
+
 
   ],
 };

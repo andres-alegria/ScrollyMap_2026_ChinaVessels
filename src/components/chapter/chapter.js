@@ -4,7 +4,10 @@ import './chapter.scss';
 import { useTranslation } from 'react-i18next';
 import { Waypoint } from 'react-waypoint';
 import LegendIcon from '../icons/legend-icon';
+import { STAGES } from "../stages/stage-registry";
 
+
+  
 // Resolve legend entry from a live Mapbox layer if `fromLayer` is provided
 const resolveLegendItem = (l) => {
   const map = typeof window !== 'undefined' ? window.__MAP__ : undefined;
@@ -45,7 +48,6 @@ const resolveLegendItem = (l) => {
   return l;
 };
 
-
 const getPatternStyles = (l) => {
   if (!l.pattern) return { backgroundColor: l.color };
 
@@ -75,6 +77,8 @@ const ALIGNMENTS = {
 function Chapter({
   id,
   theme,
+  type,
+  stage,
   title,
   image,
   images,
@@ -87,9 +91,14 @@ function Chapter({
   setCurrentAction,
    pinned,
 }) {
+ const isStage = type === "stage" && stage;
+const StageComponent = isStage ? STAGES[stage] : null;
+ 
   const { t } = useTranslation();
 
-  const stepClasses = 'step max-w-md opacity-25';
+
+
+  const stepClasses = isStage ? "step w-full opacity-100" : "step max-w-md opacity-25";
   const classList = id === currentChapterId ? `${stepClasses} active` : stepClasses;
   const renderImage = (img) => (
     <figure key={img.src} className="relative p-1">
@@ -163,32 +172,47 @@ function Chapter({
   const extraHeight = chapterHeight && chapterHeight < 400 ? 'my-40' : '';
 
   return (
-    <div id={id} className={cx(classList, ALIGNMENTS[alignment])}>
+  <div id={id} className={cx(classList, isStage ? "w-full" : ALIGNMENTS[alignment])}>
       <Waypoint
         onEnter={onEnter}
         onLeave={onLeave}
         topOffset="-20%"
         bottomOffset="40%"
       />
-      <div ref={chapterRef} className={cx(theme, 'rounded-lg p-6 space-y-4', pinned && 'lg:sticky lg:top-[10vh] z-10', extraHeight)}>
-        {images &&
-          images.filter((i) => i.position === 'top').map((i) => renderImage(i))}
-        {title && (
-          <div className="text-base leading-6">
-            {title && <h3 className="font-lora text-2xl leading-8 pb-4">{t(title)}</h3>}
-
-{description && (
-  <p
-    className="text-base leading-6"
-    dangerouslySetInnerHTML={{ __html: t(description) }}
-  />
-)}
-          </div>
+      
+      {isStage && StageComponent ? (
+  <div className="stage-chapter w-full">
+    <StageComponent />
+  </div>
+) : (
+  <div
+    ref={chapterRef}
+    className={cx(
+      theme,
+      "rounded-lg p-6 space-y-4",
+      pinned && "lg:sticky lg:top-[10vh] z-10",
+      extraHeight
+    )}
+  >
+    {/* existing normal chapter rendering stays exactly as-is */}
+    {images && images.filter((i) => i.position === "top").map((i) => renderImage(i))}
+    {title && (
+      <div className="text-base leading-6">
+        {title && <h3 className="font-lora text-2xl leading-8 pb-4">{t(title)}</h3>}
+        {description && (
+          <p
+            className="text-base leading-6"
+            dangerouslySetInnerHTML={{ __html: t(description) }}
+          />
         )}
-        {legend && renderLegend(legend, sources)}
-        {image && renderImage({ src: image })}
-        {images && images.filter((i) => i.position === 'bottom').map((i) => renderImage(i))}
       </div>
+    )}
+    {legend && renderLegend(legend, sources)}
+    {image && renderImage({ src: image })}
+    {images && images.filter((i) => i.position === "bottom").map((i) => renderImage(i))}
+  </div>
+)}
+
     </div>
   );
 }
