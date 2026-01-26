@@ -109,8 +109,8 @@ export default {
         
     
       location: {
-        center: [-46.55,-3.367],
-        zoom: 7,
+        center: [150.377570, 19.163433],
+        zoom: 4.5,
         pitch: 0,
         bearing: 0,
       },
