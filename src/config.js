@@ -2,10 +2,40 @@ const { REACT_APP_MAPBOX_ACCESS_TOKEN } = process.env;
 
 export default {
   style: 'mapbox://styles/mongabay/cmktmslps004z01se8n68atf5',
-  
+ 
   accessToken: REACT_APP_MAPBOX_ACCESS_TOKEN,
-
+ 
   theme: 'mongabay',
+
+  intro: {
+    title: 'Deep sea mining',
+    subtitle: "Tracking china vessels.",
+    date: 'February 2, 2026',
+
+   social: [
+      {
+        name: 'X',
+        src: 'x.svg',
+        href: 'https://x.com/mongabay',
+      },
+      {
+        name: 'facebook',
+        src: 'facebook.svg',
+        href: 'https://www.facebook.com/mongabay/',
+      },
+    ],
+  },
+  logos: [
+    {
+      name: 'mongabay',
+      src: 'mongabaylogo.png',
+      width: '140',
+      href: 'https://news.mongabay.com',
+    },
+  ],
+  alignment: 'left',
+  footer: 'Text by Elizabeth Alberts | Visualization by Andrés Alegría',
+ 
 
   chapters: [
 
