@@ -65,7 +65,7 @@ export default {
     {
       callback: "trackAnimation.start",
       options: {
-      vesselFile: "/data/tracks/Xiang_Yang_Hong01_track.geojson", 
+      vesselFile: "/data/tracks/Xiang_Yang_Hong02_track.geojson", 
       camera: "start",
       speed: 25,
      flyToStart: true
