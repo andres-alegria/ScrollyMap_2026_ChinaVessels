@@ -72,6 +72,9 @@ ScrollTrigger.getAll()
           <div className="horiz-gallery-wrapper">
             <div className="horiz-gallery-strip">
               <div className="project-wrap">
+                <img src="https://imgs.mongabay.com/wp-content/uploads/sites/20/2026/01/29155728/ChinaVessels_Placeholder.png" alt="Intro" />
+              </div>
+              <div className="project-wrap">
                 <img src="https://images.marinetraffic.com/collection/5045822.webp?size=800" alt="Da Yang Hao" />
               </div>
               <div className="project-wrap">
