@@ -278,12 +278,31 @@ setDot(current[headIndex]);
   };
 
   // start = load (if needed) + (optionally) restart + play
-  const start = async ({
-    vesselFile,
-    speed: sp = 2,
-    flyToStart = true,
-    restart = false
-  } = {}) => {
+const getBoundsFromParts = () => {
+  let minLon = Infinity, minLat = Infinity, maxLon = -Infinity, maxLat = -Infinity;
+
+  for (const part of parts) {
+    for (const [lon, lat] of part) {
+      if (lon < minLon) minLon = lon;
+      if (lat < minLat) minLat = lat;
+      if (lon > maxLon) maxLon = lon;
+      if (lat > maxLat) maxLat = lat;
+    }
+  }
+
+  if (!isFinite(minLon) || !isFinite(minLat) || !isFinite(maxLon) || !isFinite(maxLat)) return null;
+  return [[minLon, minLat], [maxLon, maxLat]];
+};
+  
+const start = async ({
+  vesselFile,
+  speed: sp = 2,
+  camera = "chapter",       // "chapter" | "static" | "start" | "fit"
+  cameraPadding = 80,       // used by "fit"
+  flyToStart,               // optional override; if omitted we infer from camera
+  restart = false
+} = {}) => {
+
     if (!vesselFile) {
       console.warn("trackAnimation.start: missing vesselFile");
       return;
@@ -312,15 +331,36 @@ setDot(current[headIndex]);
 
     setFeatures([]); // clear before re-drawing
 
-    if (flyToStart) {
-      const [lon, lat] = parts[0][0];
-      map.flyTo({
-        center: [lon, lat],
-        zoom: map.getZoom(),
-        bearing: map.getBearing(),
-        pitch: map.getPitch()
-      });
-    }
+const shouldFlyToStart =
+  typeof flyToStart === "boolean"
+    ? flyToStart
+    : camera === "start"; // default behavior based on camera mode
+
+if (camera === "fit") {
+  const bounds = getBoundsFromParts();
+  if (bounds) {
+    map.fitBounds(bounds, {
+      padding: cameraPadding,
+      bearing: map.getBearing(),
+      pitch: map.getPitch(),
+      duration: 1200
+    });
+  }
+} else if (shouldFlyToStart) {
+  const [lon, lat] = parts[0][0];
+  map.flyTo({
+    center: [lon, lat],
+    zoom: map.getZoom(),
+    bearing: map.getBearing(),
+    pitch: map.getPitch(),
+    duration: 1200
+  });
+} else {
+  // "chapter" and "static" do nothing here:
+  // - "chapter": let scrolly's chapter location control the camera
+  // - "static": keep whatever camera you already have
+}
+
 
     animId = requestAnimationFrame(tick);
   };

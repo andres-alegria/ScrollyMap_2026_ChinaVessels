@@ -53,8 +53,6 @@ export default {
 
 // Visual09: Pathway of other vessels
 
-// Visual10: Pathways around the Cook Islands
-
 // Visual11: BOEM
 
 
@@ -87,9 +85,7 @@ export default {
       callback: "trackAnimation.start",
       options: {
       vesselFile: "/data/tracks/Xiang_Yang_Hong01_track_June2025.geojson", 
-      camera: "start",
       speed: 5,
-     flyToStart: true
       }
     }
   ],
@@ -109,18 +105,62 @@ export default {
 },
 
 
- {
-      id: 'Visual03',
-      alignment: 'left',
- 
-      title: 'Visual03',
-      description: "Exxx.",
-        
-      location: { center: [150.0, 17.15], zoom: 3.25, pitch: 0, bearing: 0 },
-      
-      onChapterEnter: [    ],
-      onChapterExit: [    ],
-    },
+// Visual10: Pathways around the Cook Islands
+
+// Visual10a: Nautilus
+
+{
+  id: "Visual10a",
+  alignment: 'right',
+
+  title: 'Visual10a',
+  description: "Pathways around the Cook Islands. Nautilus",
+
+  location: { center: [-158.067, -18.252], zoom: 4.2, pitch: 0, bearing: 0 },
+  
+  onChapterEnter: [
+    {
+      callback: "trackAnimation.start",
+      options: {
+      vesselFile: "/data/tracks/EVNautilus.geojson", 
+      speed: 75,
+      flyToStart: false,
+      }
+    }
+    
+  ],
+  onChapterExit: [
+    { callback: "trackAnimation.resume" },
+  ]
+},
+
+
+// Visual10b: Da Yang Hao
+
+{
+  id: "Visual10b",
+  alignment: 'right',
+
+  title: 'Visual10b',
+  description: "Pathways around the Cook Islands. Da Yang Hao",
+
+  location: { center: [-158.067, -18.252], zoom: 4.2, pitch: 0, bearing: 0 },
+  
+  onChapterEnter: [
+    {
+      callback: "trackAnimation.start",
+      options: {
+      vesselFile: "/data/tracks/Da_Yang_Hao_track_Cook_Isl.geojson", 
+      speed: 1,
+      flyToStart: false,
+      }
+    }
+    
+  ],
+  onChapterExit: [
+    { callback: "trackAnimation.resume" },
+  ]
+},
 
 
   ],
