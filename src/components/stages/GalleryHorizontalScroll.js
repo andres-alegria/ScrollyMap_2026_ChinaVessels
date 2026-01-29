@@ -40,7 +40,7 @@ ScrollTrigger.getAll()
             trigger: sec,
             pin: sec,
             scrub: true,
-            start: "top top",
+            start: "center center",
             end: () => `+=${pinWrapWidth}`,
             invalidateOnRefresh: true,
           },
@@ -67,40 +67,24 @@ ScrollTrigger.getAll()
 
   return (
     <div className="stage-combo" ref={rootRef}>
-      <section className="panel plain">
-        <h1>Below are some placeholder images - testing the animation </h1>
-      </section>
-
       <section id="portfolio">
         <div className="container-fluid">
           <div className="horiz-gallery-wrapper">
             <div className="horiz-gallery-strip">
               <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_1535/" alt="" />
+                <img src="https://images.marinetraffic.com/collection/5045822.webp?size=800" alt="Da Yang Hao" />
               </div>
               <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_1656/" alt="" />
+                <img src="https://images.marinetraffic.com/collection/1521684.webp?size=800" alt="Da Yang Yi Hao" />
               </div>
               <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_2641/" alt="" />
+                <img src="https://images.marinetraffic.com/collection/1025626.webp?size=800" alt="Hai Yang Di Zhi Liu Hao" />
               </div>
               <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_2785/" alt="" />
+                <img src="https://images.marinetraffic.com/collection/6161085.webp?size=800" alt="Shen Hai Yi Hao" />
               </div>
               <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_3720/" alt="" />
-              </div>
-              <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_3765/" alt="" />
-              </div>
-              <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_5051/" alt="" />
-              </div>
-              <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_6067/" alt="" />
-              </div>
-              <div className="project-wrap">
-                <img src="https://news.mongabay.com/testpics_julielarsen_6316/" alt="" />
+                <img src="https://images.marinetraffic.com/collection/2946734.webp?size=800" alt="Xiang Yang Hong 01" />
               </div>
             </div>
           </div>
