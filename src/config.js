@@ -209,7 +209,7 @@ export default {
        
       location: {
         center: [-135.0, 12.0],
-        zoom: 0.25,
+        zoom: 3.25,
         pitch: 10,
         bearing: 0,
       },
@@ -289,6 +289,44 @@ legend: [
     { callback: "trackAnimation.resume" },
   ]
 },
+
+
+// TEST
+
+{
+  id: "VisualFlip01",
+  type: "stage",
+  stage: "GalleryFlipImage",
+
+  // Optional: card sizing (when you have many items and horizontal scroll is enabled)
+  // cardWidth: 420,
+
+  // Optional: if you only have a few items, stretch them to fill the full width
+  fillWidthWhenFew: true,
+  fillWidthMaxItems: 3,
+
+  // All content defined here:
+  items: [
+    {
+      title: "Polymetallic nodules",
+      body: "Potato-sized rocks rich in manganese, nickel copper, and cobalt are found in the sediment of flat abyssal plains, typically at depths of 4,000 to 6,000 meters. Nodules take tens of millions of years to form, accumulating metals layer by layer around a core like a shark's tooth or shell fragment. Nodules are particularly abundant in the CCZ, although they are found in many parts of the ocean.",
+      image: "image1.png",
+    },
+    {
+      title: "Polymetallic sulfides",
+      body: "Deposits rich in copper, zinc, gold and silver that form around hydrothermal vents — underwater volcanic openings that release mineral-rich fluids —  along mid-ocean ridges at depths of about 2,000 meters (6,600 feet).",
+      image: "image1.png"
+    },
+    {
+      title: "Ferromanganese crusts",
+      body: "Ferromanganese crusts grow along the surfaces of seamounts, ridges and plateaus, typically at depths of 400-5,000 meters (1,300-16,400 feet). They contain high concentrations of cobalt, along with manganese, nickel, platinum and rare earth elements. ",
+      image: "image1.png"
+    }    
+  ]
+}
+
+
+
 
 
   ],

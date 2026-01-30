@@ -92,6 +92,7 @@ function Chapter({
   setCurrentChapter,
   setCurrentAction,
   pinned,
+  ...stageProps
 }) {
 
  const isStage = type === "stage" && stage;
@@ -101,10 +102,7 @@ const StageComponent = isStage ? STAGES[stage] : null;
 
 
 
-  const stepClasses = isStage
-  ? "step step-stage w-full opacity-100"
-  : "step max-w-md opacity-25";
-
+  const stepClasses = isStage ? "step w-full opacity-100" : "step max-w-md opacity-25";
   const classList = id === currentChapterId ? `${stepClasses} active` : stepClasses;
   const renderImage = (img) => (
     <figure key={img.src} className="relative p-1">
@@ -187,8 +185,11 @@ const StageComponent = isStage ? STAGES[stage] : null;
       />
       
       {isStage && StageComponent ? (
-  <div className="stage-chapter w-full">
-<StageComponent chapter={{ id, title, description, content, html }} />
+<div className={cx("stage-chapter w-full", theme)}>
+<StageComponent
+  chapter={{ id, title, description, content, html }}
+  {...stageProps}
+/>
   </div>
 ) : (
   <div
