@@ -8,6 +8,13 @@
   min-height: 120vh; 
 }
 
+/* Stages should stack flush with each other */
+.step.step-stage {
+  padding-bottom: 0;
+  min-height: auto;
+}
+
+
 .step.active {
   opacity: 0.95;
 }

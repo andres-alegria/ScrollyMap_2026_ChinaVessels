@@ -10,7 +10,7 @@ export default {
   intro: {
     title: 'Deep sea mining',
     subtitle: "Tracking china vessels.",
-    date: 'February 2, 2026',
+    date: 'February 16, 2026',
 
    social: [
       {
@@ -48,10 +48,7 @@ export default {
   // If you use onChapterEnter -> { callback: 'trackAnimation.start', options: { camera: ... } }
   // and camera is NOT 'chapter', the chapter system will *not* move the camera (to avoid conflicts).
 
-
-
   chapters: [
-
 
 // Visual04: Types of deep-sea mineral deposits
 
@@ -138,9 +135,9 @@ export default {
 // Plain Text
 
 //  html:
-//  <h2>Placeholder heading</h2>
+//   <h3><strong>Placeholder heading</strong></h3>
 //  <p>
-//  <strong>Placeholder bold</strong> — Placeholder regular text…
+//   <strong>Placeholder bold</strong> — Placeholder regular text…
 //  <em>Placeholder italic</em>, Placeholder regular text…
 //  </p> 
 
@@ -184,6 +181,11 @@ export default {
     includes government officials, scientists, and environmentalists — warn that the marine 
     environment could be the loser in this race to the bottom of the seabed.
   </p>
+  
+   <h3><strong>China’s growing influence in the ocean</strong></h3>
+   <p>
+   Mongabay and CNN, with the support of the Pulitzer Center, tracked eight state-owned Chinese vessels that have undertaken deep sea mining exploratory missions or research in designated areas.
+    </p>
 `
 },
 
@@ -226,14 +228,9 @@ legend: [
         },
          ],
       
-
-
       onChapterEnter: [      ],
       onChapterExit: [      ],
     },
-
-
-
 
 
 
