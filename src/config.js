@@ -39,7 +39,6 @@ export default {
 
   chapters: [
 
-// Visual03: ISA contract areas
 
 // Visual04: Types of deep-sea mineral deposits
 
@@ -103,6 +102,44 @@ export default {
   type: "stage",
   stage: "GalleryHorizontalScroll",
 },
+
+// Visual03: ISA contract areas
+
+  {
+      id: 'Visual03',
+      alignment: 'fully',
+      hidden: false,
+      title: 'Visual03',
+      description: "ISA contract areas.",
+       
+      location: {
+        center: [-56.542931, -10.519600],
+        zoom: 1.25,
+        pitch: 0,
+        bearing: 0,
+      },
+
+legend: [
+        {
+          title: 'Exploration Areas',
+          color: '#e66d6d',
+          border: '#f6bcb3',
+        },
+        {
+          title: 'Reserve Areas',
+          color: '#006a54',
+        },
+         ],
+      
+      mapAnimation: 'flyTo',
+      rotateAnimation: false,
+      onChapterEnter: [      ],
+      onChapterExit: [      ],
+    },
+
+
+
+
 
 
 // Visual10: Pathways around the Cook Islands
