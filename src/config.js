@@ -135,6 +135,58 @@ export default {
 },
 
 
+// Plain Text
+
+//  html:
+//  <h2>Placeholder heading</h2>
+//  <p>
+//  <strong>Placeholder bold</strong> — Placeholder regular text…
+//  <em>Placeholder italic</em>, Placeholder regular text…
+//  </p> 
+
+{
+  id: "PlainText02",
+  type: "stage",
+  stage: "PlainText",
+  title: "",
+  
+  html:
+`  
+  <p>
+    Since entering service in 2016, the Xiang Yan Hang 01, a Chinese state-owned and 
+    operated deep-sea research vessel, has gone on several deep-sea mining research expeditions, 
+    mainly in the Northwest Pacific, including the visit in June 2025. Yet, over the past five years, 
+    the vessel has spent far more time outside designated deep-sea mining exploration areas, and has 
+    logged extensive trips in strategic waterways from the South China Sea and Guam to the Indian Ocean 
+    and the Russian Arctic — regions that naval, civil and academic experts that Mongabay and CNN 
+    spoke with say could prove critical in any future maritime conflict with the United States. 
+    These missions point towards the vessel’s dual-use nature and China’s pursuit of “maritime power” 
+    — a goal that Chinese President Xi Jinping first articulated in 2012, shortly after taking office, 
+    and has reiterated over the years. Within this broader objective, some analysts argue that China 
+    views the deep seabed, and the exploitation of its minerals, as its next frontier.
+    </p>
+    <p>
+    Alexander Gray, a security expert who previously served as the deputy assistant to the president 
+    and chief of staff of the White House National Security Council during the first Trump administration, 
+    told Mongabay and CNN that the U.S. government, particularly under Trump, has held “a very real concern” 
+    about the dual uses of China’s research vessels. He said there are separate concerns about China’s 
+    attempt to monopolize critical minerals, which he said likely drove the U.S. to pursue deep-sea mining.
+    </p>
+    <p>
+    “China [is] using critical minerals as a tool of economic coercion against the United States,” 
+    Gray said. “To the extent that we can diversify supply through deep-sea mining that adds some 
+    significant resilience and redundancy to our ability to withstand those shocks. And that, I think, 
+    very much justifies this speeding forward on this development.”
+    </p>
+    <p>
+    Indeed, the U.S. is ramping up its efforts to enter the deep-sea mining sphere, with a stated 
+    goal of countering China’s dominance in the sector. However, critics of the industry, which 
+    includes government officials, scientists, and environmentalists — warn that the marine 
+    environment could be the loser in this race to the bottom of the seabed.
+  </p>
+`
+},
+
 // Visual02: Eight vessels
 
 
@@ -148,17 +200,19 @@ export default {
 
   {
       id: 'Visual03',
-      alignment: 'fully',
+      alignment: 'left',
       hidden: false,
       title: 'Visual03',
       description: "ISA contract areas.",
        
       location: {
-        center: [-56.542931, -10.519600],
-        zoom: 1.25,
-        pitch: 0,
+        center: [-135.0, 12.0],
+        zoom: 0.25,
+        pitch: 10,
         bearing: 0,
       },
+
+      mapAnimation: 'flyTo',
 
 legend: [
         {
@@ -172,8 +226,8 @@ legend: [
         },
          ],
       
-      mapAnimation: 'flyTo',
-      rotateAnimation: false,
+
+
       onChapterEnter: [      ],
       onChapterExit: [      ],
     },
