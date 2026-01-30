@@ -1,158 +1,138 @@
-# Layers-storytelling
+# ScrollyMap Template 2026
 
-Integrates [Vizzuality's Layer manager](https://github.com/Vizzuality/layer-manager) with [mapbox/storytelling](https://github.com/mapbox/storytelling) to be able to display external layers
+This repository is a **clean, minimal scrollytelling map template** built with **React**, **Mapbox GL JS**, and **GSAP**.
 
-The external layers have to be written in Layer Manager v3. Currently there is a parser implemented to also automatically convert resource-watch LM v2 layers into v3 but only for carto and raster layers.
+## Core Concepts
 
-## Examples
+### Chapters (config.js)
+The story is driven by `src/config.js`.  
+Each chapter defines:
 
-[Amazon soy ports story](https://news.mongabay.com/2020/11/multiplying-amazon-river-ports-open-new-brazil-to-china-commodities-routes) - [Just the app](http://amazon-ports-storytelling.vercel.app)
+- Map position (center, zoom, pitch, bearing)
+- How the map should animate to that position
+- Optional callbacks triggered on chapter enter / exit
+- Optional media (images, captions)
 
+Example:
 
-## Instructions
+```js
+{
+  id: "chapter-01",
+  alignment: "right",
+  title: "Tracking vessels",
+  description: "An animated vessel track.",
 
-- Copy .env.template and rename it to .env
-- Add Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token) to the new .env
-- Update config.js with the desired chapters, layers and mapbox style
-- External layers config should be specified on the map-external-layers.js file:
-  For resource-watch layers. There is an automated way to fetch the layers
-
-```
-
-  {
-    id: '0448c79d-0ee0-42ff-9331-aeee70cef301', // Id of the DATASET on resource watch
-    slug: 'tree-cover', // New slug to call the layer in config.js
-    source: 'resource-watch' // This is needed for resource-watch layers
-    //   decodeParams: ... // optional
-    //   decodeFunction: ... // optional
-  }
-```
-
-- Update index.html and manifest.json inside public folder to update title and SEO
-
-## Config
-  Images must be placed on public folder. Background intro image is intro.png. It can be removed to have a transparent intro background.
-
-  Definition of the chapter options on the config file:
-
-  ```
-  chapters: [
-      {
-        id: 'amazon-region', // Id of the mapbox or external layer
-        title: 'Turning the Amazon river into an industrial waterway', // Title of the chapter
-        intro: { // Add this to have an intro screen
-          title: 'Amazon Soy Ports', Title of the intro
-          date: 'Nov. 10 2020' Date of publishing
-          height: '1300' // optional - height of the intro screen. default: full screen
-          social: [
-            {
-              name: 'twitter',
-              src: 'twitter.svg',
-              href: 'https://twitter.com/mongabay'
-            }
-          ]
-        },
-        logos: [ // Array of logos to be shown on the bottom right of the screen
-          {
-            name: 'mongabay', // Name to add on the alt text
-            src: 'logos.png', // logo image in public folder
-            width: '200' // optional, size in pixels
-            href: 'www.mongabay.org' // optional, link to url
-          }
-        ],
-        images: [ // Array of images to be displayed on the chapter
-          { src: 'chapter1_legend.png', // File
-            position: 'top', // position of the image, top. before the text, bottom: after the text
-            title: 'legend', // Title in the image caption
-            author: 'Mongabay', // Author in the image caption
-          },
-          { src: 'chapter1_legend.png', position: 'bottom'}
-        ],
-        legend: [
-          {
-            title: 'Industrial port facilities in the Amazon basin',
-            color: '#7259A8',
-            border: 'black', // Not required. Default is none
-            type: 'circle' // Default is square
-          },
-          {
-            title: 'Soy Storage Facilities',
-            color: '#BAA4F5'
-          }
-        ],
-        sources: 'Sources: ANTAQ (Ports), Trase.earth (storage facilities)', // Sources line below the legend
-        description: // Main text of the chapter
-          'Brazil’s government has had major plans to exploit large portions of its 35,000-kilometers (22,000-miles) of waterways since the 1970s. But it was mostly privately funded projects that went ahead, with just a third of the nation’s navigable waterway potential now fulfilled.',
-        location: { // Start location
-          center: [-57.15869, -3.85456],
-          zoom: 4.70,
-          pitch: 43.50,
-          bearing: 54.23
-        },
-        onChapterEnter: [ // Layers and opacity to display on enter
-          {
-            layer: 'amazon-ports',
-            opacity: 1
-          },
-          {
-            layer: 'soy-storage-facilities',
-            opacity: 1
-          }
-        ],
-        onChapterExit: [ // Layers and opacity to display on exit
-        {
-          layer: 'soy-storage-facilities',
-          opacity: 0.3
-        }
-      ],
-    }
-```
-
-## Translations
-
-The app is using i18next and react-i18next npm packages.
-The text will be translated to the browser selected language.
-
-Define the translations in translations.js file on the root directory:
-
-You can have as many languages as you want just add all the keys with the selected [language code](https://www.w3schools.com/tags/ref_language_codes.asp) and pick every text displayed on the app as a key the translation as the value.
-
-E.g.
-
-```
-export default {
-  es: {
-    "Amazon Soy Ports": 'Puertos de soja en el Amazonas',
-    ...
+  location: {
+    center: [-158.067, -18.252],
+    zoom: 4.2,
+    pitch: 0,
+    bearing: 0,
+    mapAnimation: "flyTo" // 'flyTo' | 'easeTo' | 'jumpTo'
   },
-  de: {
-    ...
-  }
-};
+
+  onChapterEnter: [
+    {
+      callback: "trackAnimation.start",
+      options: {
+        vesselFile: "/data/tracks/example.geojson",
+        speed: 75,
+        flyToStart: true
+      }
+    }
+  ]
+}
 ```
 
-## Iframe test
 
-You can enter /test folder and use some [simple server](https://www.npmjs.com/package/http-server)(https://www.npmjs.com/package/http-server) to test the application on an iframe
+### Map Animations
 
-## Installation and dependencies
+Each chapter can control **how** the map moves using `mapAnimation`:
 
-Install dependencies listed in the `package.json` file:
+- `flyTo` – cinematic, animated movement (default)
+- `easeTo` – smoother, less dramatic motion
+- `jumpTo` – immediate jump (no animation)
 
+These are implemented in:
+`src/components/map/map-hooks.js`
+
+Comments in that file explain exactly where to tweak behavior.
+
+
+## Stages (Non‑Map Sections)
+
+In addition to map chapters, the template supports **Stages**: full‑width sections that are not tied to map movement.
+
+Stages are defined by a `type` and rendered via:
+
+`src/components/stages/stage-registry.js`
+
+Currently included stage types:
+
+- `GalleryHorizontalScroll`
+- `GalleryFilter`
+- `PlainTextStage`
+
+Each stage is self‑contained (JS + CSS) and can use GSAP or any other animation logic internally.
+
+Stages are ideal for:
+- Image sequences
+- Data explanations
+- Visual breaks between map sections
+
+
+## Track Animation (Optional)
+
+The template includes an **optional vessel track animation engine**.
+
+It:
+- Loads a GeoJSON LineString
+- Draws the line progressively
+- Moves a dot along the track
+- Optionally moves the camera
+
+The public API is exposed as:
+
+```js
+trackAnimation.start(options)
+trackAnimation.pause()
+trackAnimation.resume()
+trackAnimation.stop()
 ```
-yarn install
-```
 
-Run the development server:
+All supported options are documented directly in:
+`src/components/map/track-animation.js`
 
-```
-yarn start
-```
+If you do not need track animations, you can remove this module entirely without affecting the rest of the template.
 
-Follow the instructions above for setting up your configuration file and building out your story. Once the application is ready for deployment, run:
 
-```
-yarn build
-```
+## External Layers (Optional)
 
-This command will generate a `build` directory that contains everything you will need to deploy your story.
+External vector or raster layers can be defined in:
+
+`src/components/map/map-external-layers.js`
+
+This is intentionally kept simple and disabled by default.  
+Only enable it when you actually need external data sources.
+
+
+## Environment Setup
+
+1. Copy the environment template:
+   ```bash
+   cp .env.template .env
+   ```
+
+2. Add your Mapbox access token:
+   ```
+   REACT_APP_MAPBOX_ACCESS_TOKEN=your_token_here
+   ```
+
+3. Install dependencies:
+   ```bash
+   yarn install
+   ```
+
+4. Start development server:
+   ```bash
+   yarn start
+   ```

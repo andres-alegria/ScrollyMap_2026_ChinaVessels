@@ -6,7 +6,7 @@ import "./GalleryHorizontalScroll.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ComboHorizFilterStage() {
+export default function GalleryHorizontalScroll() {
   const rootRef = useRef(null);
 
 useEffect(() => {
@@ -36,7 +36,12 @@ ScrollTrigger.getAll()
         gsap.to(pinWrap, {
           x: -horizontalScrollLength,
           ease: "none",
-          scrollTrigger: {
+          // ScrollTrigger key options:
+            // - start/end: controls when the horizontal scroll begins/ends
+            // - scrub: links animation to scroll position (true = smooth)
+            // - pin: keeps the section fixed while the strip moves
+            // - invalidateOnRefresh: recompute sizes on resize
+            scrollTrigger: {
             trigger: sec,
             pin: sec,
             scrub: true,

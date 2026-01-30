@@ -14,8 +14,25 @@ const Map = (props) => {
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
   const mapContainerRef = useRef(null);
-  const initialLocation = chapters[0].location;
+
+  // Use the first chapter that actually has a location (so PlainText can be first)
+  const firstChapterWithLocation = chapters.find(
+    (c) =>
+      c &&
+      c.location &&
+      Array.isArray(c.location.center) &&
+      c.location.center.length === 2
+  );
+
+  const initialLocation = firstChapterWithLocation?.location ?? {
+    center: [0, 0],
+    zoom: 1,
+    pitch: 0,
+    bearing: 0
+  };
+
   const [initialLongitude, initialLatitude] = initialLocation.center;
+
   const [markerPosition, setMarkerPosition] = useState({
     latitude: initialLatitude,
     longitude: initialLongitude
@@ -36,27 +53,27 @@ const Map = (props) => {
   useHandleResize(updateViewport);
 
   // Set map when loaded
- useEffect(() => {
-  if (loaded && mapRef.current) {
-    const m = mapRef.current.getMap();
-    setMap(m);
-    // Expose globally so the legend can read paint props
-    if (typeof window !== 'undefined') {
-  window.__MAP__ = m;
-  window.map = m; // ← ADD THIS LINE
+useEffect(() => {
+  if (!loaded || !mapRef.current) return undefined;
 
-  // Keep the reference fresh if the style changes
-  m.on('styledata', () => {
+  const m = mapRef.current.getMap();
+  setMap(m);
+
+  // Expose the live Mapbox map instance globally so other components (e.g. legend)
+  // can read current paint properties from layers.
+  //
+  // Keep this name stable: chapter.js uses window.__MAP__.
+  if (typeof window !== 'undefined') {
     window.__MAP__ = m;
-    window.map = m; // ← keep it fresh on style changes too
-  });
-}
 
-
+    // If the style reloads (setStyle), keep the reference available.
+    m.on('styledata', () => {
+      window.__MAP__ = m;
+    });
   }
+
   return undefined;
 }, [mapRef, loaded, setMap]);
-
 
 // 1) Animated vessel track setup (source + layer)
 useEffect(() => {
@@ -294,6 +311,23 @@ const getBoundsFromParts = () => {
   return [[minLon, minLat], [maxLon, maxLat]];
 };
   
+// trackAnimation.start(options)
+//
+// Options you can set from config.js:
+//   vesselFile: "/data/tracks/YourFile.geojson"  (required)
+//   speed: Number
+//     - how fast the animation advances per frame (higher = faster).
+//   camera: "chapter" | "static" | "start" | "fit"
+//     - "chapter": let the chapter location control the camera (default).
+//     - "static":  do not move the camera at all.
+//     - "start":   fly to the first coordinate of the track before drawing.
+//     - "fit":     fitBounds to the whole track before drawing.
+//   cameraPadding: Number
+//     - padding (px) used by camera:"fit".
+//   flyToStart: boolean (optional)
+//     - manual override for the "start" behavior.
+//   restart: boolean
+//     - force reloading and restart the animation from the beginning.
 const start = async ({
   vesselFile,
   speed: sp = 2,

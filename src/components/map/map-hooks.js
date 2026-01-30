@@ -1,6 +1,19 @@
 import { useEffect, useState } from 'react';
 import { setOpacityOnAction } from './map-hooks-utils';
 
+// Chapter scroll controller
+//
+// Key config knobs to know (in config.js, per chapter):
+// - location: { center: [lon, lat], zoom, pitch, bearing, ... }
+// - mapAnimation: controls how the chapter moves the camera
+//     "flyTo"  (default) -> animated flight
+//     "easeTo"           -> smooth ease
+//     "jumpTo"           -> instant jump (no animation)
+//   Any other value falls back to "flyTo".
+//
+// NOTE: if a chapter triggers trackAnimation.start with camera != "chapter",
+// we skip the chapter camera move to avoid fighting the animation camera.
+
 export const useScrollFunctionality = ({
   loaded,
   map,
@@ -18,42 +31,60 @@ export const useScrollFunctionality = ({
 
     const externalLayersIds = (externalLayers || []).map((l) => l.id);
 
-    // helper: resolve "trackAnimation.start" -> window.trackAnimation.start
+    // Resolve a string callback like "trackAnimation.start" -> window.trackAnimation.start
     const resolveCallback = (callbackStr) =>
       callbackStr
         .split('.')
         .reduce((o, k) => (o ? o[k] : undefined), window);
 
-    // helper: should the chapter system control the camera (map.flyTo)?
+    // Should the chapter system control the camera?
+    // Track animation can take over the camera, depending on its camera mode.
     const shouldChapterControlCamera = (chapter) => {
       const enters = chapter?.onChapterEnter || [];
       const trackStartStep = enters.find(
         (s) => s && s.callback === 'trackAnimation.start'
       );
 
-      if (!trackStartStep) return true; // no track animation, normal chapter flyTo
+      if (!trackStartStep) return true; // no track animation, normal chapter camera
 
       const cam = trackStartStep?.options?.camera;
 
-      // If the chapter explicitly sets a camera mode that is NOT "chapter",
-      // we must NOT flyTo the chapter location here, or it overrides the track camera logic.
+      // If the chapter sets a camera mode that is NOT "chapter",
+      // we must NOT flyTo the chapter location here (it overrides track camera logic).
       if (cam && cam !== 'chapter') return false;
 
-      // Otherwise, chapter controls camera as usual
       return true;
+    };
+
+    // Apply chapter location with a configurable Mapbox camera method.
+    const applyChapterLocation = (chapter) => {
+      if (!chapter?.location) return;
+
+      const method = chapter.mapAnimation || 'flyTo';
+
+      // Mapbox GL JS supports flyTo/easeTo/jumpTo with the same options object.
+      // - flyTo: animated flight
+      // - easeTo: smooth ease
+      // - jumpTo: instant update
+      const fn =
+        method === 'easeTo'
+          ? map.easeTo
+          : method === 'jumpTo'
+            ? map.jumpTo
+            : map.flyTo;
+
+      fn.call(map, chapter.location);
     };
 
     if (currentChapterId && currentAction === 'enter') {
       const chapter = (chapters || []).find((c) => c.id === currentChapterId);
       if (!chapter) return;
 
-      // Only apply chapter location if we are allowed to control the camera
       if (chapter.location && shouldChapterControlCamera(chapter)) {
-        map.flyTo(chapter.location);
+        applyChapterLocation(chapter);
       }
 
-      // Markers: your "center" is [lon, lat] in the rest of your codebase,
-      // so set markerPosition accordingly.
+      // Markers: your "center" is [lon, lat]
       if (showMarkers && chapter.location && Array.isArray(chapter.location.center)) {
         const [markerLongitude, markerLatitude] = chapter.location.center;
         setMarkerPosition({

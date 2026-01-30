@@ -6,7 +6,6 @@ import * as serviceWorker from './serviceWorker';
 import config from './config.js';
 import './tailwind.output.css';
 import './i18n';
-import './callbacks'; 
 
 ReactDOM.render(<App {...config} />, document.getElementById('root'));
 

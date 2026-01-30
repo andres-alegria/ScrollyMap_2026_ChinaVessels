@@ -7,7 +7,7 @@ import "./GalleryFilter.css";
 
 gsap.registerPlugin(ScrollTrigger, Flip);
 
-export default function ComboHorizFilterStage() {
+export default function GalleryFilter() {
   const rootRef = useRef(null);
 
 useEffect(() => {
