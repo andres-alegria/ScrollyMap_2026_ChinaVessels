@@ -95,14 +95,18 @@ function Chapter({
   ...stageProps
 }) {
 
- const isStage = type === "stage" && stage;
+const isStage = type === "stage" && stage;
 const StageComponent = isStage ? STAGES[stage] : null;
  
   const { t } = useTranslation();
 
 
 
-  const stepClasses = isStage ? "step w-full opacity-100" : "step max-w-md opacity-25";
+const stepClasses = cx(
+  isStage ? "step w-full opacity-100" : "step max-w-md opacity-25",
+  stageProps?.tight && "step--tight"
+);
+
   const classList = id === currentChapterId ? `${stepClasses} active` : stepClasses;
   const renderImage = (img) => (
     <figure key={img.src} className="relative p-1">

@@ -102,9 +102,9 @@ useEffect(() => {
         type: "line",
         source: SOURCE_ID,
         paint: {
-          "line-color": "#530e0d",  
-          "line-width": 1,
-          "line-opacity": 0.5
+          "line-color": "#f6bcb3",  
+          "line-width": 2,
+          "line-opacity": 0.9
         }
       });
     }
@@ -129,9 +129,9 @@ if (!map.getLayer(DOT_LAYER_ID)) {
     source: DOT_SOURCE_ID,
     paint: {
       "circle-radius": 4,
-      "circle-color": "#530e0d",
+      "circle-color": "#891916",
       "circle-stroke-width": 0.5,
-      "circle-stroke-color": "#ffffff"
+      "circle-stroke-color": "#fafafa"
     }
   });
 }

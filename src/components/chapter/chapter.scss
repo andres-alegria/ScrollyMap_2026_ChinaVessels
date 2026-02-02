@@ -14,6 +14,11 @@
   min-height: auto;
 }
 
+/* Optional: remove the built-in scroll spacer for specific chapters */
+.step.step--tight {
+  padding-bottom: 0;
+  min-height: auto;
+}
 
 .step.active {
   opacity: 0.95;
